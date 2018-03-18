@@ -1,10 +1,8 @@
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JPasswordField;
-import java.awt.BorderLayout;
 
-public class InvalidLoginDetails {
+public class SignUp {
 
 	private JFrame frame;
 
@@ -15,7 +13,7 @@ public class InvalidLoginDetails {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					InvalidLoginDetails window = new InvalidLoginDetails();
+					SignUp window = new SignUp();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -27,7 +25,7 @@ public class InvalidLoginDetails {
 	/**
 	 * Create the application.
 	 */
-	public InvalidLoginDetails() {
+	public SignUp() {
 		initialize();
 	}
 
@@ -35,10 +33,9 @@ public class InvalidLoginDetails {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame("Invalid login details!");
+		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
 }
-
