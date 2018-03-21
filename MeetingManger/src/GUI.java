@@ -13,6 +13,9 @@ import java.awt.Color;
 
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
+import javax.swing.JTextPane;
+import javax.swing.JTextArea;
+import java.awt.Font;
 
 public class GUI {
 
@@ -20,6 +23,7 @@ public class GUI {
 	private JTextField userName;
 	private JTextField password;
 	private JPasswordField passwordField;
+	private JTextField txtInvalidUnsernameOr;
 	
 	
 	/**
@@ -78,6 +82,12 @@ public class GUI {
 		password.setBounds(420, 275, 176, 22);
 		frame.getContentPane().add(password);
 		
+		JLabel lblInvalidUsernameOr = new JLabel("Invalid username or password");
+		lblInvalidUsernameOr.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblInvalidUsernameOr.setForeground(Color.RED);
+		lblInvalidUsernameOr.setBounds(420, 156, 196, 16);
+		frame.getContentPane().add(lblInvalidUsernameOr);
+		lblInvalidUsernameOr.setVisible(false);
 		
 		//Login button
 		JButton login = new JButton("Login");
@@ -97,11 +107,12 @@ public class GUI {
 			    if (userName.getText().equals(Username) && password.getText().equals(Password)) {
 			        System.out.println("Access Granted! Welcome!");
 			    } else if(login.getText().equals(Username)) {
-			        System.out.println("Invalid Password!");
+			    	lblInvalidUsernameOr.setVisible(true);		        
 			    } else if (password.getText().equals(Password)) {
-			        System.out.println("Invalid Username!");
+			    	lblInvalidUsernameOr.setVisible(true);
 			    } else {
-			        System.out.println("Invalid Username & Password!");
+			    	lblInvalidUsernameOr.setVisible(true);
+			        
 			    }
 			}
 		});
@@ -145,9 +156,15 @@ public class GUI {
 		lblNewLabel.setBounds(-47, 0, 1072, 600);
 		frame.getContentPane().add(lblNewLabel);
 		
-		passwordField = new JPasswordField();
-		passwordField.setBounds(514, 331, 82, 25);
-		frame.getContentPane().add(passwordField);
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 	}
