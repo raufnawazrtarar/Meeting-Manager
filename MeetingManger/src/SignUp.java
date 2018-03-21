@@ -1,19 +1,27 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.JLabel;
 
-public class SignUp {
+public class SignUp extends JFrame {
 
+	private JPanel contentPane;
+	private JTextField fullName;
 	private JTextField userName;
 	private JTextField password;
-	private JFrame frame;
-
 	/**
 	 * Launch the application.
 	 */
@@ -21,8 +29,8 @@ public class SignUp {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SignUp window = new SignUp();
-					window.frame.setVisible(true);
+					SignUp frame = new SignUp();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -31,48 +39,65 @@ public class SignUp {
 	}
 
 	/**
-	 * Create the application.
+	 * Create the frame.
 	 */
 	public SignUp() {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame("Sign Up");
-		frame.setBounds(100, 100, 1128, 627);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(1280,720);
-		frame.setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1128, 627);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		setResizable(false);
+		setSize(1280,720);
+		contentPane.setLayout(null);
+		
+		//full name text box
+		fullName = new JTextField();
+		fullName.setBackground(Color.WHITE);
+		fullName.setForeground(Color.BLACK);
+		fullName.setBounds(580, 192, 176, 22);
+		getContentPane().add(fullName);
+		fullName.setColumns(10);
 		
 		
 		//User Name text box
-				userName = new JTextField();
-				userName.setBackground(Color.WHITE);
-				userName.setForeground(Color.BLACK);
-				userName.setBounds(520, 222, 176, 22);
-				frame.getContentPane().add(userName);
-				userName.setColumns(10);
-				
-				//Password Text box	
-				password = new JPasswordField();
-				password.setForeground(Color.BLACK);
-				password.setColumns(10);
-				password.setBackground(Color.WHITE);		
-				password.setBounds(420, 275, 176, 22);
-				frame.getContentPane().add(password);
+		userName = new JTextField();
+		userName.setBackground(Color.WHITE);
+		userName.setForeground(Color.BLACK);
+		userName.setBounds(580, 265, 176, 22);
+		getContentPane().add(userName);
+		userName.setColumns(10);
 		
+		//Password Text box	
+		password = new JPasswordField();
+		password.setForeground(Color.BLACK);
+		password.setColumns(10);
+		password.setBackground(Color.WHITE);		
+		password.setBounds(580, 338, 176, 22);
+		getContentPane().add(password);
+		
+		//sign up button
+		JButton signUp = new JButton("Sign Up");
+		signUp.setForeground(Color.WHITE);	
+		Border border = new LineBorder(Color.WHITE, 2);
+		signUp.setBorder(border);
+		signUp.setBackground(new Color(18, 72, 180));
+		signUp.setBounds(674, 389, 82, 25);
+		getContentPane().add(signUp);
+		signUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(userName.getText());
+				System.out.print(password.getText());
+			}
+		});
 		
 		//label to add background picture
-	JLabel lblNewLabel = new JLabel("");
-	lblNewLabel.setBackground(Color.WHITE);
-	lblNewLabel.setForeground(Color.WHITE);
-	Image img = new ImageIcon(this.getClass().getResource("/Signup.png")).getImage();
-	lblNewLabel.setIcon(new ImageIcon(img));
-	lblNewLabel.setBounds(-47, 0, 1072, 600);
-	frame.getContentPane().add(lblNewLabel);
+		JLabel signUpBackground = new JLabel("");
+		signUpBackground.setBackground(Color.WHITE);
+		signUpBackground.setForeground(Color.WHITE);
+		Image img = new ImageIcon(this.getClass().getResource("/signUp.png")).getImage();
+		signUpBackground.setIcon(new ImageIcon(img));
+		signUpBackground.setBounds(0, 0, 1274, 685);
+		getContentPane().add(signUpBackground);
 	}
-
 }

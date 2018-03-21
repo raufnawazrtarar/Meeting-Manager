@@ -1,6 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Window;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -8,9 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-
 import java.awt.Color;
-
 import javax.swing.JButton;
 import javax.swing.JPasswordField;
 import javax.swing.JTextPane;
@@ -22,8 +21,7 @@ public class GUI {
 	private JFrame frame;
 	private JTextField userName;
 	private JTextField password;
-	private JPasswordField passwordField;
-	private JTextField txtInvalidUnsernameOr;
+	
 	
 	
 	/**
@@ -128,6 +126,8 @@ public class GUI {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println(userName.getText());
 				System.out.print(password.getText());
+				SignUp su = new SignUp();
+				su.setVisible(true);
 			}
 		});
 		//exit button
@@ -158,13 +158,7 @@ public class GUI {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
+
 		
 		
 	}
