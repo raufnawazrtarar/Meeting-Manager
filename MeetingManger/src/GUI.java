@@ -18,9 +18,11 @@ import java.awt.Font;
 
 public class GUI {
 
-	private JFrame frame;
+	private JFrame loginFrame;
 	private JFrame signUpFrame;
 	private JFrame menuFrame;
+	private JFrame addMeetingFrame;
+	private JFrame viewMeetingFrame;
 	private JTextField userName;
 	private JTextField newUserName;
 	private JTextField password;
@@ -35,7 +37,7 @@ public class GUI {
 			public void run() {
 				try {
 					GUI window = new GUI();
-					window.frame.setVisible(true);
+					window.loginFrame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -43,23 +45,12 @@ public class GUI {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
-	public GUI() {
-		
-		initialize();
-		signUp();
-		menu();
-		
-		
-	}
 
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Initialize the contents of the login frame.
 	 */
-	public void initialize() {
+	public void login() {
 		
 		String Username;
 	    String Password;
@@ -69,19 +60,19 @@ public class GUI {
 		
 		
 	    
-		frame = new JFrame("Login");
-		frame.setBounds(100, 100, 1035, 647);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setSize(1365,720);
-		frame.getContentPane().setLayout(null);
+		loginFrame = new JFrame("Login");
+		loginFrame.setBounds(100, 100, 1035, 647);
+		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		loginFrame.setResizable(false);
+		loginFrame.setSize(1365,720);
+		loginFrame.getContentPane().setLayout(null);
 		
 		//User Name text box
 		userName = new JTextField();
 		userName.setBackground(Color.WHITE);
 		userName.setForeground(Color.BLACK);
 		userName.setBounds(575, 240, 215, 22);
-		frame.getContentPane().add(userName);
+		loginFrame.getContentPane().add(userName);
 		userName.setColumns(10);
 		
 		//Password Text box	
@@ -90,13 +81,13 @@ public class GUI {
 		password.setColumns(10);
 		password.setBackground(Color.WHITE);		
 		password.setBounds(575, 323, 215, 22);
-		frame.getContentPane().add(password);
+		loginFrame.getContentPane().add(password);
 		
 		JLabel lblInvalidUsernameOr = new JLabel("Invalid username or password");
 		lblInvalidUsernameOr.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblInvalidUsernameOr.setForeground(Color.RED);
 		lblInvalidUsernameOr.setBounds(575, 157, 215, 16);
-		frame.getContentPane().add(lblInvalidUsernameOr);
+		loginFrame.getContentPane().add(lblInvalidUsernameOr);
 		lblInvalidUsernameOr.setVisible(false);
 		
 		//Login button
@@ -106,14 +97,14 @@ public class GUI {
 		login.setBorder(border);
 		login.setBackground(new Color(18, 72, 180));
 		login.setBounds(708, 396, 82, 25);
-		frame.getContentPane().add(login);
+		loginFrame.getContentPane().add(login);
 		
 		login.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 	
 			    if (userName.getText().equals(Username) && password.getText().equals(Password)) {
 			        System.out.println("Access Granted! Welcome!");
-			        frame.setVisible(false);
+			        loginFrame.setVisible(false);
 					signUpFrame.setVisible(false);
 					menuFrame.setVisible(true);
 			    } else if(login.getText().equals(Username)) {
@@ -133,10 +124,11 @@ public class GUI {
 		signUp.setBorder(border);
 		signUp.setBackground(new Color(18, 72, 180));
 		signUp.setBounds(575, 396, 82, 25);
-		frame.getContentPane().add(signUp);
+		loginFrame.getContentPane().add(signUp);
 		signUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			frame.setVisible(false);
+			loginFrame.setVisible(false);
+			addMeetingFrame.setVisible(false);
 			signUpFrame.setVisible(true);
 	
 			
@@ -148,7 +140,7 @@ public class GUI {
 		exit.setBorder(border);
 		exit.setBackground(new Color(18, 72, 180));
 		exit.setBounds(654, 560, 82, 25);
-		frame.getContentPane().add(exit);
+		loginFrame.getContentPane().add(exit);
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.print("Exit");
@@ -166,7 +158,7 @@ public class GUI {
 		Image img = new ImageIcon(this.getClass().getResource("/login.png")).getImage();
 		lblNewLabel.setIcon(new ImageIcon(img));
 		lblNewLabel.setBounds(0, 0, 1359, 685);
-		frame.getContentPane().add(lblNewLabel);
+		loginFrame.getContentPane().add(lblNewLabel);
 		
 		
 		
@@ -234,7 +226,7 @@ public class GUI {
 		signUpFrame.getContentPane().add(back);
 		back.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					frame.setVisible(true);
+					loginFrame.setVisible(true);
 					signUpFrame.setVisible(false);			
 						}
 					});
@@ -263,7 +255,7 @@ public class GUI {
 		signUpFrame.getContentPane().add(signUpBackground);
 	}
 	
-	public void menu() {
+public void menu() {
 		
 		menuFrame = new JFrame("Menu");
 		menuFrame.setBounds(100, 100, 1035, 647);
@@ -272,8 +264,102 @@ public class GUI {
 		menuFrame.setSize(1365,720);
 		menuFrame.getContentPane().setLayout(null);
 		
+		JButton viewMeetingBtn = new JButton("");
+		viewMeetingBtn.setBounds(34, 22, 106, 86);
+		menuFrame.getContentPane().add(viewMeetingBtn);
+		viewMeetingBtn.setOpaque(false);
+		viewMeetingBtn.setContentAreaFilled(false);
+		menuFrame.getContentPane().add(viewMeetingBtn);
+		viewMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("view meeting");
+					viewMeetingFrame.setVisible(true);
+					loginFrame.setVisible(false);
+					addMeetingFrame.setVisible(false);
+					signUpFrame.setVisible(false);
+								
+				}
+			});
 		
+		JButton addMeetingBtn = new JButton("");
+		addMeetingBtn.setBounds(34, 127, 106, 86);
+		menuFrame.getContentPane().add(addMeetingBtn);
+		addMeetingBtn.setOpaque(false);
+		addMeetingBtn.setContentAreaFilled(false);
+		menuFrame.getContentPane().add(addMeetingBtn);
+		addMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("add meeting");
+					loginFrame.setVisible(false);
+					addMeetingFrame.setVisible(true);
+					signUpFrame.setVisible(false);
+				}
+			});
 		
+		JButton editMeetingBtn = new JButton("");
+		editMeetingBtn.setBounds(34, 227, 106, 93);
+		menuFrame.getContentPane().add(editMeetingBtn);
+		editMeetingBtn.setOpaque(false);
+		editMeetingBtn.setContentAreaFilled(false);
+		menuFrame.getContentPane().add(editMeetingBtn);
+		editMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("edit meeting");				
+				}
+			});
+		
+		JButton searchMeetingBtn = new JButton("");
+		searchMeetingBtn.setBounds(34, 333, 106, 102);
+		menuFrame.getContentPane().add(searchMeetingBtn);
+		searchMeetingBtn.setOpaque(false);
+		searchMeetingBtn.setContentAreaFilled(false);
+		menuFrame.getContentPane().add(searchMeetingBtn);
+		searchMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Search meeting");				
+				}
+			});
+		
+		JButton deleteMeetingBtn = new JButton("");
+		deleteMeetingBtn.setBounds(34, 448, 106, 86);
+		menuFrame.getContentPane().add(deleteMeetingBtn);
+		deleteMeetingBtn.setOpaque(false);
+		deleteMeetingBtn.setContentAreaFilled(false);
+		menuFrame.getContentPane().add(deleteMeetingBtn);
+		deleteMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Delete meeting");				
+				}
+			});
+
+		JButton undoBtn = new JButton("");
+		undoBtn.setBounds(34, 548, 106, 112);
+		menuFrame.getContentPane().add(undoBtn);
+		undoBtn.setOpaque(false);
+		undoBtn.setContentAreaFilled(false);
+		menuFrame.getContentPane().add(undoBtn);
+		undoBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Undo");				
+				}
+			});
+		
+		JButton logoutBtn = new JButton("");
+		logoutBtn.setBounds(1268, 599, 91, 86);
+		menuFrame.getContentPane().add(logoutBtn);
+		logoutBtn.setOpaque(false);
+		logoutBtn.setContentAreaFilled(false);
+		menuFrame.getContentPane().add(logoutBtn);
+		logoutBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Logout");	
+					password.setText("");
+					userName.setText("");
+					loginFrame.setVisible(true);
+					addMeetingFrame.setVisible(false);
+					signUpFrame.setVisible(false);
+				}
+			});
 		//label to add background picture
 		JLabel menuBackground = new JLabel("");
 		menuBackground.setBackground(Color.WHITE);
@@ -282,9 +368,264 @@ public class GUI {
 		menuBackground.setIcon(new ImageIcon(img));
 		menuBackground.setBounds(0, 0, 1359, 685);
 		menuFrame.getContentPane().add(menuBackground);		
+			
+		
+	}
+	
+public void viewMeetings() {
+		
+		viewMeetingFrame = new JFrame("view meetings");
+		viewMeetingFrame.setBounds(100, 100, 1035, 647);
+		viewMeetingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		viewMeetingFrame.setResizable(false);
+		viewMeetingFrame.setSize(1359, 720);
+		viewMeetingFrame.getContentPane().setLayout(null);
+		
+		
+		JButton viewMeetingBtn = new JButton("");
+		viewMeetingBtn.setBounds(34, 22, 106, 86);
+		viewMeetingFrame.getContentPane().add(viewMeetingBtn);
+		viewMeetingBtn.setOpaque(false);
+		viewMeetingBtn.setContentAreaFilled(false);
+		viewMeetingFrame.getContentPane().add(viewMeetingBtn);
+		viewMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("view meeting");
+					viewMeetingFrame.setVisible(true);
+					loginFrame.setVisible(false);
+					viewMeetingFrame.setVisible(false);
+					signUpFrame.setVisible(false);
+								
+				}
+			});
+		
+		JButton addMeetingBtn = new JButton("");
+		addMeetingBtn.setBounds(1, 110, 181, 102);
+		viewMeetingFrame.getContentPane().add(addMeetingBtn);
+		addMeetingBtn.setOpaque(false);
+		addMeetingBtn.setContentAreaFilled(false);
+		viewMeetingFrame.getContentPane().add(addMeetingBtn);
+		addMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("add meeting");
+					loginFrame.setVisible(false);
+					signUpFrame.setVisible(false);
+					menuFrame.setVisible(false);
+					viewMeetingFrame.setVisible(false);
+					addMeetingFrame.setVisible(true);
+
+				}
+			});
+		
+		JButton editMeetingBtn = new JButton("");
+		editMeetingBtn.setBounds(34, 227, 106, 93);
+		viewMeetingFrame.getContentPane().add(editMeetingBtn);
+		editMeetingBtn.setOpaque(false);
+		editMeetingBtn.setContentAreaFilled(false);
+		viewMeetingFrame.getContentPane().add(editMeetingBtn);
+		editMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("edit meeting");				
+				}
+			});
+		
+		JButton searchMeetingBtn = new JButton("");
+		searchMeetingBtn.setBounds(34, 333, 106, 102);
+		viewMeetingFrame.getContentPane().add(searchMeetingBtn);
+		searchMeetingBtn.setOpaque(false);
+		searchMeetingBtn.setContentAreaFilled(false);
+		viewMeetingFrame.getContentPane().add(searchMeetingBtn);
+		searchMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Search meeting");				
+				}
+			});
+		
+		JButton deleteMeetingBtn = new JButton("");
+		deleteMeetingBtn.setBounds(34, 448, 106, 86);
+		viewMeetingFrame.getContentPane().add(deleteMeetingBtn);
+		deleteMeetingBtn.setOpaque(false);
+		deleteMeetingBtn.setContentAreaFilled(false);
+		viewMeetingFrame.getContentPane().add(deleteMeetingBtn);
+		deleteMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Delete meeting");				
+				}
+			});
+
+		JButton undoBtn = new JButton("");
+		undoBtn.setBounds(34, 548, 106, 112);
+		viewMeetingFrame.getContentPane().add(undoBtn);
+		undoBtn.setOpaque(false);
+		undoBtn.setContentAreaFilled(false);
+		viewMeetingFrame.getContentPane().add(undoBtn);
+		undoBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Undo");				
+				}
+			});
+		
+		JButton logoutBtn = new JButton("");
+		logoutBtn.setBounds(1268, 599, 91, 86);
+		viewMeetingFrame.getContentPane().add(logoutBtn);
+		logoutBtn.setOpaque(false);
+		logoutBtn.setContentAreaFilled(false);
+		viewMeetingFrame.getContentPane().add(logoutBtn);
+		logoutBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Logout");	
+					password.setText("");
+					userName.setText("");
+					loginFrame.setVisible(true);
+					viewMeetingFrame.setVisible(false);
+					signUpFrame.setVisible(false);
+				}
+			});
 		
 		
 		
+		//label to add background picture
+		JLabel viewMeetingMenuBackground = new JLabel("");
+		viewMeetingMenuBackground.setBackground(Color.WHITE);
+		viewMeetingMenuBackground.setForeground(Color.WHITE);
+		Image img = new ImageIcon(this.getClass().getResource("/viewMeetingMenu.png")).getImage();
+		viewMeetingMenuBackground.setIcon(new ImageIcon(img));
+		viewMeetingMenuBackground.setBounds(0, 0, 1359, 720);
+		viewMeetingFrame.getContentPane().add(viewMeetingMenuBackground);				
+		
+}
+	
+public void addMeetings() {
+		
+		addMeetingFrame = new JFrame("Add meetings");
+		addMeetingFrame.setBounds(100, 100, 1035, 647);
+		addMeetingFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addMeetingFrame.setResizable(false);
+		addMeetingFrame.setSize(1359, 720);
+		addMeetingFrame.getContentPane().setLayout(null);
+		
+		
+		JButton viewMeetingBtn = new JButton("");
+		viewMeetingBtn.setBounds(34, 22, 106, 86);
+		addMeetingFrame.getContentPane().add(viewMeetingBtn);
+		viewMeetingBtn.setOpaque(false);
+		viewMeetingBtn.setContentAreaFilled(false);
+		addMeetingFrame.getContentPane().add(viewMeetingBtn);
+		viewMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("view meeting");
+					viewMeetingFrame.setVisible(true);
+					loginFrame.setVisible(false);
+					viewMeetingFrame.setVisible(false);
+					signUpFrame.setVisible(false);
+								
+				}
+			});
+		
+		JButton addMeetingBtn = new JButton("");
+		addMeetingBtn.setBounds(1, 110, 181, 102);
+		addMeetingFrame.getContentPane().add(addMeetingBtn);
+		addMeetingBtn.setOpaque(false);
+		addMeetingBtn.setContentAreaFilled(false);
+		addMeetingFrame.getContentPane().add(addMeetingBtn);
+		addMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("add meeting");
+					loginFrame.setVisible(false);
+					addMeetingFrame.setVisible(true);
+					signUpFrame.setVisible(false);
+				}
+			});
+		
+		JButton editMeetingBtn = new JButton("");
+		editMeetingBtn.setBounds(34, 227, 106, 93);
+		addMeetingFrame.getContentPane().add(editMeetingBtn);
+		editMeetingBtn.setOpaque(false);
+		editMeetingBtn.setContentAreaFilled(false);
+		addMeetingFrame.getContentPane().add(editMeetingBtn);
+		editMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("edit meeting");				
+				}
+			});
+		
+		JButton searchMeetingBtn = new JButton("");
+		searchMeetingBtn.setBounds(34, 333, 106, 102);
+		addMeetingFrame.getContentPane().add(searchMeetingBtn);
+		searchMeetingBtn.setOpaque(false);
+		searchMeetingBtn.setContentAreaFilled(false);
+		addMeetingFrame.getContentPane().add(searchMeetingBtn);
+		searchMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Search meeting");				
+				}
+			});
+		
+		JButton deleteMeetingBtn = new JButton("");
+		deleteMeetingBtn.setBounds(34, 448, 106, 86);
+		addMeetingFrame.getContentPane().add(deleteMeetingBtn);
+		deleteMeetingBtn.setOpaque(false);
+		deleteMeetingBtn.setContentAreaFilled(false);
+		addMeetingFrame.getContentPane().add(deleteMeetingBtn);
+		deleteMeetingBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Delete meeting");				
+				}
+			});
+
+		JButton undoBtn = new JButton("");
+		undoBtn.setBounds(34, 548, 106, 112);
+		addMeetingFrame.getContentPane().add(undoBtn);
+		undoBtn.setOpaque(false);
+		undoBtn.setContentAreaFilled(false);
+		addMeetingFrame.getContentPane().add(undoBtn);
+		undoBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Undo");				
+				}
+			});
+		
+		JButton logoutBtn = new JButton("");
+		logoutBtn.setBounds(1268, 599, 91, 86);
+		addMeetingFrame.getContentPane().add(logoutBtn);
+		logoutBtn.setOpaque(false);
+		logoutBtn.setContentAreaFilled(false);
+		addMeetingFrame.getContentPane().add(logoutBtn);
+		logoutBtn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					System.out.print("Logout");	
+					password.setText("");
+					userName.setText("");
+					loginFrame.setVisible(true);
+					addMeetingFrame.setVisible(false);
+					signUpFrame.setVisible(false);
+				}
+			});
+		
+		
+		
+		//label to add background picture
+		JLabel addMeetingMenuBackground = new JLabel("");
+		addMeetingMenuBackground.setBackground(Color.WHITE);
+		addMeetingMenuBackground.setForeground(Color.WHITE);
+		Image img = new ImageIcon(this.getClass().getResource("/addMeetingMenu.png")).getImage();
+		addMeetingMenuBackground.setIcon(new ImageIcon(img));
+		addMeetingMenuBackground.setBounds(0, 0, 1359, 720);
+		addMeetingFrame.getContentPane().add(addMeetingMenuBackground);				
+		
+}
+
+	/**
+	 * Create the application.
+	 */
+	public GUI() {
+		viewMeetings();
+		addMeetings();
+		login();
+		signUp();
+		menu();
+		
+
 	}
 }
 
