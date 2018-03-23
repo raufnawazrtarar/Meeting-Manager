@@ -11,7 +11,7 @@ import java.util.TreeSet;
  */
 public class Employee {
 	
-	private int employeeID;
+	private String userName;
 	private String firstName;
 	private String surname;
 	private boolean status;
@@ -19,16 +19,16 @@ public class Employee {
 	
 	
 	/**
-	 * @return the employeeID
+	 * @return the userName
 	 */
-	public int getEmployeeID() {
-		return employeeID;
+	public String getUserName() {
+		return userName;
 	}
 	/**
-	 * @param employeeID the employeeID to set
+	 * @param username the userName to set
 	 */
-	public void setEmployeeID(int employeeID) {
-		this.employeeID = employeeID;
+	public void setUsername(String userName) {
+		this.userName = userName;
 	}
 	/**
 	 * @return the firstName
@@ -84,7 +84,7 @@ public class Employee {
 	 */
 	public Employee()
 	{
-		employeeID = 0; //need to create and assign a unique ID
+		userName = "";
 		firstName = "";
 		surname = "";
 		status = true;

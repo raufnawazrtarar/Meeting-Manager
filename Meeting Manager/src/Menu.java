@@ -125,18 +125,19 @@ public class Menu {
 	
 	/**
 	 * Determines if changes can be made to meetings and edits them
+	 * @param toEdit Meeting to edit
+	 * @param date The changed date
+	 * @param startTime The changed start time
+	 * @param endTime The changed end time
+	 * @param description The changed description
+	 * @param attending The changed list of employees attending
 	 */
-	public void editMeeting(Meeting toEdit)
+	public void editMeeting(Meeting toEdit,Time date, Time startTime, 
+			Time endTime, String description, ArrayList<Employee> attending)
 	{
 		boolean valid = true;
-		//get new details from gui & need to validate user input
-		Time date;
-		Time startTime;
-		Time endTime;
-		String description;
-		ArrayList<Employee> attending;
 		
-		//check all employees are free for new meeting
+		//checks if all employees are free for the new meeting date and time
 		boolean free = true;
 		for(Employee employee : attending)
 		{
@@ -154,23 +155,23 @@ public class Menu {
 			Meeting beforeEdits = new Meeting(toEdit);
 			lastChange[0] = beforeEdits;
 			
-			if(!toEdit.getAttending().equals(attending)) //the employees attending has changed
+			if(!toEdit.getAttending().equals(attending) || !toEdit.getDate().equals(date) 
+					|| !toEdit.getStartTime().equals(startTime))
 			{
 				deleteMeeting(toEdit);
+				toEdit.setDate(date);
+				toEdit.setStartTime(startTime);
 				toEdit.setAttending(attending);
 				addMeeting(toEdit);
 			}
-			
-			toEdit.setDate(date);
-			toEdit.setStartTime(startTime);
 			toEdit.setEndTime(endTime);
 			toEdit.setDescription(description);
-			toEdit.setAttending(attending);
+			
 			lastChange[1] = toEdit;
 		}
 		else
 		{
-			System.out.println("Cannot make these changes to the meeting.");
+			System.out.println("Cannot make these changes to the meeting as not all employees are available.");
 		}
 	}
 	
