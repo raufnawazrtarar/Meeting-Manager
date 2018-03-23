@@ -111,32 +111,47 @@ public class Meeting {
 	}
 	
 	/**
-	 * Add feature
-	 * @param toAdd
+	 * Alternative constructor for Meeting
+	 * @param date
+	 * @param startTime
 	 */
-	public static void addMeeting(Meeting toAdd)
+	public Meeting(Time date, Time startTime)
 	{
-		
+		this.date = date;
+		this.startTime = startTime;
+		endTime = null;
+		description = "";
+		attending = new ArrayList<Employee>();
 	}
 	
 	/**
-	 * Edit feature
-	 * @param toEdit
+	 * Alternative constructor for Meeting
+	 * @param date
+	 * @param startTime
+	 * @param endTime
+	 * @param description
+	 * @param attending
 	 */
-	public static void editMeeting(Meeting toEdit)
+	public Meeting(Time date, Time startTime, Time endTime, String description, ArrayList<Employee> attending)
 	{
-		
+		this.date = date;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.description = description;
+		this.attending = attending;
 	}
 	
 	/**
-	 * Delete feature
-	 * @param toDelete
+	 * Copy constructor for Meeting
+	 * @param meeting
 	 */
-	public static void deleteMeeting(Meeting toDelete)
+	public Meeting(Meeting meeting)
 	{
-		for(Employee employee : toDelete.getAttending())
-		{
-			employee.getDiary().remove(toDelete);
-		}
+		date = meeting.getDate();
+		startTime = meeting.getStartTime();
+		endTime = meeting.getEndTime();
+		description = meeting.getDescription();
+		attending = new ArrayList<Employee>(meeting.getAttending());
 	}
+
 }

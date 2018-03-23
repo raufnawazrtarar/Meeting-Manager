@@ -15,7 +15,7 @@ public class Menu {
 	private ArrayList<Employee> allEmployees;
 	private String fileName;
 	private Stack<String> editsMade;
-	private Meeting lastChange;
+	private Meeting[] lastChange;
 	
 	/**
 	 * @return the allEmployees
@@ -59,17 +59,18 @@ public class Menu {
 		this.editsMade = editsMade;
 	}
 
+	
 	/**
 	 * @return the lastChange
 	 */
-	public Meeting getLastChange() {
+	public Meeting[] getLastChange() {
 		return lastChange;
 	}
 
 	/**
 	 * @param lastChange the lastChange to set
 	 */
-	public void setLastChange(Meeting lastChange) {
+	public void setLastChange(Meeting[] lastChange) {
 		this.lastChange = lastChange;
 	}
 
@@ -78,7 +79,9 @@ public class Menu {
 	 */
 	public Menu()
 	{
-		
+		allEmployees = new ArrayList<Employee>();
+		editsMade = new Stack<String>();
+		lastChange = new Meeting[2];
 	}
 	
 	/**
@@ -89,30 +92,116 @@ public class Menu {
 
 		
 	}
+	
+	/**
+	 * Add meeting method for undo feature
+	 * @param toAdd
+	 */
+	public void addMeeting(Meeting toAdd)
+	{
+		for(Employee employee : toAdd.getAttending())
+		{
+			employee.getDiary().add(toAdd);
+		}
+		
+		lastChange[0] = toAdd;
+		editsMade.push("add");
+	}
 
 	/**
-	 * Undo feature
+	 * Delete meeting
+	 * @param toDelete
 	 */
-	public void undo()
+	public void deleteMeeting(Meeting toDelete)
 	{
-		String editType = editsMade.pop();
-		switch(editType)
+		for(Employee employee : toDelete.getAttending())
 		{
-			case "add": break;
-			case "delete": break;
-			case "edit": break;
+			employee.getDiary().remove(toDelete);
 		}
+		
+		lastChange[0] = toDelete;
+		editsMade.push("delete");
 	}
 	
 	/**
-	 * Search feature
-	 * @param employees
-	 * @param date
-	 * @param startTime
-	 * @param endTime
+	 * Determines if changes can be made to meetings and edits them
 	 */
-	public void search(ArrayList<Employee> employees, Time date, Time startTime, Time endTime)
+	public void editMeeting(Meeting toEdit)
 	{
+		boolean valid = true;
+		//get new details from gui & need to validate user input
+		Time date;
+		Time startTime;
+		Time endTime;
+		String description;
+		ArrayList<Employee> attending;
 		
+		//check all employees are free for new meeting
+		boolean free = true;
+		for(Employee employee : attending)
+		{
+			free = employee.isFree(date, startTime, endTime);
+			if(!free)
+			{
+				valid = false;
+				break;
+			}
+		}
+		
+		if(valid)
+		{
+			editsMade.push("edit");
+			Meeting beforeEdits = new Meeting(toEdit);
+			lastChange[0] = beforeEdits;
+			
+			if(!toEdit.getAttending().equals(attending)) //the employees attending has changed
+			{
+				deleteMeeting(toEdit);
+				toEdit.setAttending(attending);
+				addMeeting(toEdit);
+			}
+			
+			toEdit.setDate(date);
+			toEdit.setStartTime(startTime);
+			toEdit.setEndTime(endTime);
+			toEdit.setDescription(description);
+			toEdit.setAttending(attending);
+			lastChange[1] = toEdit;
+		}
+		else
+		{
+			System.out.println("Cannot make these changes to the meeting.");
+		}
 	}
+	
+	
+	/**
+	 * Undo feature
+	 */
+	public boolean undo()
+	{
+		boolean undo = false;
+		String editType = editsMade.pop();
+		switch(editType)
+		{
+			case "add": 
+				deleteMeeting(lastChange[0]);
+				undo = true;
+				break;
+			
+			case "delete": 
+				addMeeting(lastChange[0]);
+				undo = true;
+				break;
+			
+			case "edit":
+				deleteMeeting(lastChange[1]); //delete meeting from after edits
+				addMeeting(lastChange[0]); //add meeting from before edits
+				undo = true;
+				break;
+		}
+		
+		return undo;
+	}
+	
 }

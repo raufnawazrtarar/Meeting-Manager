@@ -1,3 +1,4 @@
+import java.sql.Time;
 import java.util.TreeSet;
 
 /**
@@ -87,7 +88,7 @@ public class Employee {
 		firstName = "";
 		surname = "";
 		status = true;
-		diary = new TreeSet<Meeting>();
+		diary = new TreeSet<Meeting>(new MeetingComp());
 	}
 	
 
@@ -98,5 +99,21 @@ public class Employee {
 	public void viewDiary(String viewType)
 	{
 		
+	}
+	
+	/**
+	 * Determines if an employee has no meetings scheduled between 2 times on a certain date
+	 * @param date
+	 * @param startTime
+	 * @param endTime
+	 * @return
+	 */
+	public boolean isFree(Time date, Time startTime, Time endTime)
+	{
+		boolean free = true;
+		Meeting from = new Meeting(date, startTime);
+		Meeting to = new Meeting(date, endTime);
+		free = diary.subSet(from, to).isEmpty();
+		return free;
 	}
 }
