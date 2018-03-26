@@ -1,6 +1,7 @@
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -21,7 +22,7 @@ import java.util.Stack;
 public class Menu {
 
 	private ArrayList<Employee> allEmployees;
-	private ArrayList<Employee> employeesAtMeeting;	//For testing just now
+	private ArrayList<Employee> employeesAtMeeting;
 	private Stack<String> editsMade;
 	private Employee employee;
 	private String fileName;
@@ -232,11 +233,15 @@ public class Menu {
 		//User chooses employees from drop down list - these employees are added to 'employees' ArrayList
 		//For testing just now i've created an employee to add
 		Employee employee1 = new Employee("user", "Abc", "Xyz");
-//		Employee employee2 = new Employee("user", "Abc", "Xyz");
+		Employee employee2 = new Employee("user", "Abc", "Xyz");
 //		Employee employee3 = new Employee("user", "Abc", "Xyz");
 		employeesAtMeeting.add(employee1);
+		employeesAtMeeting.add(employee2);
 		
-
+		Time startSearchTime;
+		Time endSearchTime;
+		Long duration;
+		
 		
 		//User enters date to store meeting
 		Scanner s1 = new Scanner(System.in);
@@ -251,7 +256,7 @@ public class Menu {
 			 //Formats string to Date object
 			 date = formatter.parse(stringDate);
 			//Printing date just to make sure it's working - will delete later
-			 System.out.println(date);
+			 //System.out.println(date);
 			 System.out.println(formatter.format(date));
 
 	      }
@@ -262,35 +267,153 @@ public class Menu {
 		
 		//User chooses startTime and endTime of search
 		//TODO - GUI - maybe select from drop down?
-		System.out.println("Please enter the earliest time to start searching for a meeting (in the format hh:mm:ss)");
-		 
-		String stringStartTime = s1.nextLine();
-		 
-		Time startSearchTime = Time.valueOf(stringStartTime);
-		 
-		System.out.println("Please enter the latest time to end searching for a meeting (in the format h:mm:ss)");
-		String stringEndTime = s1.nextLine();
-		 
-		Time endSearchTime = java.sql.Time.valueOf(stringEndTime);
 		
-		System.out.println("Please enter the duration of the meeting (please keep to 30 min segments in the format hh:mm:ss)");
-		String Stringduration = s1.nextLine();
+		boolean durationValid = false;
+		do
+		{
+			System.out.println("Please enter the earliest time to start searching for a meeting (in the format hh:mm)");
+			 
+			String stringStartTime = (s1.nextLine() + ":00");
+			 
+			startSearchTime = Time.valueOf(stringStartTime);
+			 
+			System.out.println("Please enter the latest time to end searching for a meeting (in the format h:mm)");
+			String stringEndTime = (s1.nextLine() + ":00");
+			 
+			endSearchTime = java.sql.Time.valueOf(stringEndTime);
+			
+			System.out.println("Please enter the duration of the meeting (please keep to 30 min segments for up to 2 hours and enter the time in minutes e.g. '30', '60', '90', '120')");
+			duration = s1.nextLong();
+			
+			if (duration == 30 || duration == 60 || duration == 90 || duration == 120)
+			{
+				durationValid = true;
+			}
+			else
+			{
+				System.out.println("Incorrect duration entered");
+				System.out.println("Please enter a half hour segment in minutes between 30 and 120");
+				System.out.println("If you wish to make a meeting longer than 2 hours, please schedule 2 seperate meetings");
+				duration = s1.nextLong();
+			}
+		} 
+		while (durationValid == false);
 		
-		Time duration = Time.valueOf(Stringduration);
 		
 		//search() method is called - (returning time chosen when feature is added)
 		Time timeToAdd = search(employeesAtMeeting, date, startSearchTime, endSearchTime, duration);
 		
+		String stringTimeToAdd = timeToAdd.toString();
+		
+		System.out.println("Meeting starting at: " + stringTimeToAdd);
+
+		LocalTime meetingEndTime = LocalTime.parse(stringTimeToAdd);
+
+		meetingEndTime = meetingEndTime.plusMinutes(duration);
+		
+		System.out.println("Meeting ending at: " + meetingEndTime);
+		System.out.println("Added to diaries");
+		
 		Meeting meetingToAdd= new Meeting(date, timeToAdd);
 		
+		ArrayList<Meeting> meetingsToAddList = new ArrayList<Meeting>();
 		
-		for(int i = 0; i < employeesAtMeeting.size(); i++)
+		meetingsToAddList.add(meetingToAdd);
+		
+		if (duration == 60)
 		{
-			employeesAtMeeting.get(i).addMeeting(meetingToAdd);
+			String tempString = timeToAdd.toString();
+
+			//Create variable for second start time, adding the first start time
+			LocalTime meetingStartTime2 = LocalTime.parse(tempString);
+
+			//Add 30 mins to starting time
+			meetingStartTime2 = meetingStartTime2.plusMinutes(30);
 			
-			//System.out.println(employeesAtMeeting.get(i).getDiary().);
+			//Convert variable to String
+			String stringTimeToAdd2 = (meetingStartTime2.toString() + ":00");
 			
+			//Convert string to Time object
+			Time timeToAdd2 = java.sql.Time.valueOf(stringTimeToAdd2);
+			
+			//Use value to create second meeting half an hour later
+			Meeting meetingToAdd2 = new Meeting(date, timeToAdd2);
+			
+			//Add meeting to list of meetings
+			meetingsToAddList.add(meetingToAdd2);
 		}
+		else if (duration == 90)
+		{
+			String tempString = timeToAdd.toString();
+
+			//Create variable for second start time, adding the first start time
+			LocalTime meetingStartTime2 = LocalTime.parse(tempString);
+
+			//Add 30 mins to each starting time
+			meetingStartTime2 = meetingStartTime2.plusMinutes(30);
+			LocalTime meetingStartTime3 = meetingStartTime2.plusMinutes(30);
+			
+			//Convert variable to String variables
+			String stringTimeToAdd2 = (meetingStartTime2.toString() + ":00");
+			String stringTimeToAdd3 = (meetingStartTime3.toString() + ":00");
+			
+			//Convert Strings to Time object
+			Time timeToAdd2 = java.sql.Time.valueOf(stringTimeToAdd2);
+			Time timeToAdd3 = java.sql.Time.valueOf(stringTimeToAdd3);
+			
+			//Use valuse to create further meetings half an hour later
+			Meeting meetingToAdd2 = new Meeting(date, timeToAdd2);
+			Meeting meetingToAdd3 = new Meeting(date, timeToAdd3);
+			
+			//Add meetings to list of meetings
+			meetingsToAddList.add(meetingToAdd2);
+			meetingsToAddList.add(meetingToAdd3);
+		}
+		else if (duration == 120)
+		{
+			String tempString = timeToAdd.toString();
+
+			//Create variable for second start time, adding the first start time
+			LocalTime meetingStartTime2 = LocalTime.parse(tempString);
+
+			//Add 30 mins to each starting time
+			meetingStartTime2 = meetingStartTime2.plusMinutes(30);
+			LocalTime meetingStartTime3 = meetingStartTime2.plusMinutes(30);
+			LocalTime meetingStartTime4 = meetingStartTime3.plusMinutes(30);
+			
+			//Convert variable to String variables
+			String stringTimeToAdd2 = (meetingStartTime2.toString() + ":00");
+			String stringTimeToAdd3 = (meetingStartTime3.toString() + ":00");
+			String stringTimeToAdd4 = (meetingStartTime4.toString() + ":00");
+			
+			//Convert Strings to Time object
+			Time timeToAdd2 = java.sql.Time.valueOf(stringTimeToAdd2);
+			Time timeToAdd3 = java.sql.Time.valueOf(stringTimeToAdd3);
+			Time timeToAdd4 = java.sql.Time.valueOf(stringTimeToAdd4);
+			
+			//Use valuse to create further meetings half an hour later
+			Meeting meetingToAdd2 = new Meeting(date, timeToAdd2);
+			Meeting meetingToAdd3 = new Meeting(date, timeToAdd3);
+			Meeting meetingToAdd4 = new Meeting(date, timeToAdd3);
+			
+			//Add meetings to list of meetings
+			meetingsToAddList.add(meetingToAdd2);
+			meetingsToAddList.add(meetingToAdd3);
+			meetingsToAddList.add(meetingToAdd4);
+		}
+			
+		
+		//Stepping thorough all employees to be present at the meeting
+		for(int i = 0; i < employeesAtMeeting.size(); i++)
+		{	
+			//stepping through all meetings in arrayList
+			for (int j = 0; j < meetingsToAddList.size(); j++)
+			{
+				//Adds meeting into diary
+				employeesAtMeeting.get(i).addMeeting(meetingsToAddList.get(j));
+			}
+		}
+		
 	}
 	
 	/**
@@ -301,7 +424,7 @@ public class Menu {
 	 * @param endTime
 	 * @return 
 	 */
-	public Time search(ArrayList<Employee> employees, Date date, Time startSearchTime, Time endSearchTime, Time duration)
+	public Time search(ArrayList<Employee> employees, Date date, Time startSearchTime, Time endSearchTime, Long duration)
 	{
 		Set<Time> allTimes = new HashSet<Time>();
 		Set<Time> allBusy = new HashSet<Time>();
@@ -349,8 +472,6 @@ public class Menu {
 		
 			}
 			
-			
-			
 			//Add all contents of the temporary set to allBusy Set
 			allBusy.addAll(tempEmployeeBusySet);
 		}
@@ -359,7 +480,7 @@ public class Menu {
 		
 		for (Time time : allTimes) 
 		{
-			if (time.after(startSearchTime) && time.before(endSearchTime))
+			if (time.equals(startSearchTime) || time.after(startSearchTime) && time.before(endSearchTime))
 			{
 				tempSet.add(time);
 			}
