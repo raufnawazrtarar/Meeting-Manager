@@ -146,7 +146,7 @@ public class Menu {
 	 * @param description The changed description
 	 * @param attending The changed list of employees attending
 	 */
-	public void editMeeting(Meeting toEdit,Time date, Time startTime, 
+	public void editMeeting(Meeting toEdit,Date date, Time startTime, 
 			Time endTime, String description, ArrayList<Employee> attending)
 	{
 		boolean valid = true;
@@ -471,6 +471,10 @@ public class Menu {
 		Set<Time> allBusy = new HashSet<Time>();
 		
 		Time timeToAdd = null;
+		
+		long timeAtStart = System.currentTimeMillis();
+		
+		System.out.println(timeAtStart);
 
 		//Adding all possible meeting times (every half hour 9-5) to the allTimes set
 		//TODO: find alternative way to add all of these times
@@ -588,6 +592,13 @@ public class Menu {
 				timeToAdd = meetingTimes.get(i);
 			}
 		}
+		
+		LocalTime timeAtEnd = LocalTime.now();
+		System.out.println(timeAtEnd);
+		LocalTime durationOfSearch = timeAtEnd.minusNanos(timeAtStart);
+		
+				
+		System.out.println("Time taken to perform the search: " + durationOfSearch + " seconds");
 		return timeToAdd;
 		
 		//TODO: GUI - user able to click on meeting time to add meeting at that time
