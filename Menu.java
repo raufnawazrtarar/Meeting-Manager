@@ -238,49 +238,89 @@ public class Menu {
 		employeesAtMeeting.add(employee1);
 		employeesAtMeeting.add(employee2);
 		
-		Time startSearchTime;
-		Time endSearchTime;
-		Long duration;
+		Time startSearchTime = null;
+		Time endSearchTime = null;
+		Long duration = null;
+		
+		Scanner s1 = new Scanner(System.in);
 		
 		
 		//User enters date to store meeting
-		Scanner s1 = new Scanner(System.in);
 		System.out.println("Please enter the date on which you would like to hold the meeting in the format (dd-mm-yyyy)");
 		String stringDate = s1.nextLine();
 		
 		//Format for user to enter String in
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		
-		 try 
-		 {
-			 //Formats string to Date object
-			 date = formatter.parse(stringDate);
-			//Printing date just to make sure it's working - will delete later
-			 //System.out.println(date);
-			 System.out.println(formatter.format(date));
+		boolean valid = true;
+		do
+		{
+			 try 
+			 {
+				 valid = true;
+				 //Formats string to Date object
+				 date = formatter.parse(stringDate);
+				//Printing date just to make sure it's working - will delete later
+				 //System.out.println(date);
+				 System.out.println(formatter.format(date));
 
-	      }
-		 catch (ParseException e) 
-		 {
-			 e.printStackTrace();
-	     }
+		      }
+			 catch (ParseException e) 
+			 {
+				 System.out.println("Invalid date format, please try again entering the date in the format dd-mm-yyyy");
+				 valid = false;
+				 stringDate = s1.nextLine();
+		     }
+		}
+		while (valid == false);
+		
+
 		
 		//User chooses startTime and endTime of search
 		//TODO - GUI - maybe select from drop down?
 		
+		valid = false;
 		boolean durationValid = false;
 		do
 		{
 			System.out.println("Please enter the earliest time to start searching for a meeting (in the format hh:mm)");
 			 
-			String stringStartTime = (s1.nextLine() + ":00");
+			do
+			{
+				try
+				{
+					String stringStartTime = (s1.nextLine() + ":00");
+					 
+					startSearchTime = Time.valueOf(stringStartTime);
+					valid = true;
+				}
+				catch (java.lang.IllegalArgumentException e)
+				{
+					System.out.println("Invalid input, please try again entering the time in the format hh:mm");
+					valid = false;
+				}
+			}
+			while (valid == false);
+			
+			
+			 System.out.println("Please enter the latest time to end searching for a meeting (in the format h:mm)");
+			 do
+			 {
+				try
+				{
+					String stringEndTime = (s1.nextLine() + ":00");
+					endSearchTime = java.sql.Time.valueOf(stringEndTime);
+					valid = true;
+				}
+				catch (java.lang.IllegalArgumentException e)
+				{
+					System.out.println("Invalid input, please try again entering the time in the format hh:mm");
+					valid = false;
+				}
+			 }
+			 while (valid == false);
 			 
-			startSearchTime = Time.valueOf(stringStartTime);
-			 
-			System.out.println("Please enter the latest time to end searching for a meeting (in the format h:mm)");
-			String stringEndTime = (s1.nextLine() + ":00");
-			 
-			endSearchTime = java.sql.Time.valueOf(stringEndTime);
+			
 			
 			System.out.println("Please enter the duration of the meeting (please keep to 30 min segments for up to 2 hours and enter the time in minutes e.g. '30', '60', '90', '120')");
 			duration = s1.nextLong();
