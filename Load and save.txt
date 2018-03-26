@@ -1,0 +1,37 @@
+public void loadFromFile()
+{
+	JOptionPane.showMessageDialog(null, "Loading from file...");
+    FileInputStream inputStream;
+    ObjectInputStream objectInputStream;
+    try
+    {
+  	  inputStream = new FileInputStream(menuClass.getFileName());
+  	  objectInputStream = new ObjectInputStream(inputStream);
+  	  menuClass.setAllEmployees((ArrayList<Employee>) objectInputStream.readObject());
+  	  objectInputStream.close();
+    }
+    catch(Exception e)
+    {
+    	JOptionPane.showMessageDialog(null,"Error loading from file");
+    }
+}
+
+
+public void saveToFile()
+{
+	JOptionPane.showMessageDialog(null, "Saving to file...");
+	FileOutputStream outputStream;
+	ObjectOutputStream objectOutputStream;
+	try
+	{
+		outputStream = new FileOutputStream(menuClass.getFileName());
+		objectOutputStream = new ObjectOutputStream(outputStream);
+		objectOutputStream.writeObject(menuClass.getAllEmployees());
+		objectOutputStream.flush();
+		objectOutputStream.close();
+	}
+	catch (Exception e)
+	{
+		JOptionPane.showMessageDialog(null,"Error in saving to file");
+	}
+}
