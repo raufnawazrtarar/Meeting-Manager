@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 
@@ -9,19 +10,19 @@ import java.util.ArrayList;
  * @author Nicole
  *
  */
-public class Meeting {
+public class Meeting implements Comparable<Meeting>{
 	
-	private Time date;
+	private Date date;
 	private Time startTime;
 	private Time endTime;
 	private String description;
 	private ArrayList<Employee> attending;
 
-	
+
 	/**
 	 * @return the date
 	 */
-	public Time getDate() {
+	public Date getDate() {
 		return date;
 	}
 
@@ -29,7 +30,7 @@ public class Meeting {
 	/**
 	 * @param date the date to set
 	 */
-	public void setDate(Time date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 
@@ -115,7 +116,7 @@ public class Meeting {
 	 * @param date
 	 * @param startTime
 	 */
-	public Meeting(Time date, Time startTime)
+	public Meeting(Date date, Time startTime)
 	{
 		this.date = date;
 		this.startTime = startTime;
@@ -132,7 +133,7 @@ public class Meeting {
 	 * @param description
 	 * @param attending
 	 */
-	public Meeting(Time date, Time startTime, Time endTime, String description, ArrayList<Employee> attending)
+	public Meeting(Date date, Time startTime, Time endTime, String description, ArrayList<Employee> attending)
 	{
 		this.date = date;
 		this.startTime = startTime;
@@ -154,4 +155,29 @@ public class Meeting {
 		attending = new ArrayList<Employee>(meeting.getAttending());
 	}
 
+
+	@Override
+	public int compareTo(Meeting m2)
+	{
+		int compare = date.compareTo(m2.getDate());
+		if(compare == 0)
+		{
+			return startTime.compareTo(m2.getStartTime());
+		}
+		else
+		{
+			return compare;
+		}
+	}
+	
+	/**
+	 * Display meeting details on console
+	 */
+	public void display()
+	{
+		System.out.println(description);
+		System.out.println("Date: " + date);
+		System.out.println("Start Time: " + startTime);
+		System.out.println("End Time: " + endTime);
+	}
 }

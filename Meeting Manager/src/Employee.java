@@ -1,4 +1,6 @@
+import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 /**
@@ -88,32 +90,62 @@ public class Employee {
 		firstName = "";
 		surname = "";
 		status = true;
-		diary = new TreeSet<Meeting>(new MeetingComp());
+		diary = new TreeSet<Meeting>();
 	}
 	
-
 	/**
-	 * 
-	 * @param viewType
+	 * Alternative constructor for Employee
 	 */
-	public void viewDiary(String viewType)
+	public Employee(String userName)
 	{
-		
+		userName = "";
+		firstName = "";
+		surname = "";
+		status = true;
+		diary = new TreeSet<Meeting>();
 	}
+
+	
 	
 	/**
-	 * Determines if an employee has no meetings scheduled between 2 times on a certain date
-	 * @param date
-	 * @param startTime
-	 * @param endTime
-	 * @return
+	 * Determines if an employee has no meetings, other a specified meeting, scheduled between 2 times on a certain date
+	 * @param ignoreMeeting Meeting to ignore
+	 * @param date Date to check
+	 * @param startTime Start time
+	 * @param endTime End time
+	 * @return If the employee is free between the specified times
 	 */
-	public boolean isFree(Time date, Time startTime, Time endTime)
+	public boolean isFree(Meeting ignoreMeeting, Date date, Time startTime, Time endTime)
 	{
 		boolean free = true;
-		Meeting from = new Meeting(date, startTime);
-		Meeting to = new Meeting(date, endTime);
-		free = diary.subSet(from, to).isEmpty();
+		for(Meeting m : diary)
+		{
+			if(m != ignoreMeeting)
+			{
+				if(date.compareTo(m.getDate()) == 0)
+				{
+					boolean start = startTime.after(m.getStartTime()) && startTime.before(m.getEndTime());
+					boolean end = endTime.after(m.getStartTime()) && endTime.before(m.getEndTime());
+					if(start || end)
+					{
+						free = false;
+						return free;
+					}
+				}
+			}
+		}
 		return free;
+	}
+	
+	/**
+	 * Display diary to console
+	 */
+	public void displayDiary()
+	{
+		for(Meeting m : diary)
+		{
+			m.display();
+		}
+		System.out.println();
 	}
 }

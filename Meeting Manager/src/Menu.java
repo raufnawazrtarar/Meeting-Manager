@@ -1,3 +1,4 @@
+import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -89,8 +90,53 @@ public class Menu {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
 		
+		//Testing
+		/*Menu menu = new Menu();
+		menu.allEmployees.add(new Employee("x"));
+		menu.allEmployees.add(new Employee("y"));
+		menu.allEmployees.add(new Employee("z"));
+		Meeting m1 = new Meeting(Date.valueOf("2018-03-03"), Time.valueOf("10:00:00"), Time.valueOf("13:00:00"), "M1", menu.allEmployees);
+		Meeting m2 = new Meeting(Date.valueOf("2018-03-03"), Time.valueOf("14:00:00"), Time.valueOf("16:00:00"), "M2", menu.allEmployees);
+		Meeting m3 = new Meeting(Date.valueOf("2018-03-05"), Time.valueOf("09:00:00"), Time.valueOf("10:00:00"), "M3", menu.allEmployees);
+		Meeting m4 = new Meeting(Date.valueOf("2018-04-03"), Time.valueOf("09:00:00"), Time.valueOf("10:00:00"), "M4", menu.allEmployees);
+		Meeting m5 = new Meeting(Date.valueOf("2019-03-03"), Time.valueOf("09:00:00"), Time.valueOf("10:00:00"), "M5", menu.allEmployees);
+		menu.addMeeting(m1);
+		menu.addMeeting(m2);
+		menu.addMeeting(m3);
+		menu.addMeeting(m4);
+		menu.addMeeting(m5);
+		for(Employee e : menu.allEmployees)
+		{
+			e.displayDiary();
+		}
+		menu.undo();
+		for(Employee e : menu.allEmployees)
+		{
+			e.displayDiary();
+		}
+		menu.deleteMeeting(m5);
+		menu.deleteMeeting(m4);
+		for(Employee e : menu.allEmployees)
+		{
+			e.displayDiary();
+		}
+		menu.undo();
+		for(Employee e : menu.allEmployees)
+		{
+			e.displayDiary();
+		}
+		menu.editMeeting(m2, Date.valueOf("2018-03-03"), Time.valueOf("14:00:00"), Time.valueOf("15:00:00"), "M2 edited", menu.allEmployees);
+		menu.undo();
+		for(Employee e : menu.allEmployees)
+		{
+			e.displayDiary();
+		}
+		menu.undo();
+		for(Employee e : menu.allEmployees)
+		{
+			e.displayDiary();
+		}*/
 	}
 	
 	/**
@@ -132,7 +178,7 @@ public class Menu {
 	 * @param description The changed description
 	 * @param attending The changed list of employees attending
 	 */
-	public void editMeeting(Meeting toEdit,Time date, Time startTime, 
+	public void editMeeting(Meeting toEdit, Date date, Time startTime, 
 			Time endTime, String description, ArrayList<Employee> attending)
 	{
 		boolean valid = true;
@@ -141,7 +187,7 @@ public class Menu {
 		boolean free = true;
 		for(Employee employee : attending)
 		{
-			free = employee.isFree(date, startTime, endTime);
+			free = employee.isFree(toEdit, date, startTime, endTime);
 			if(!free)
 			{
 				valid = false;
@@ -177,12 +223,13 @@ public class Menu {
 	
 	
 	/**
-	 * Undo feature
+	 * Undo feature (only undoes the very last change)
 	 */
 	public boolean undo()
 	{
 		boolean undo = false;
 		String editType = editsMade.pop();
+		//System.out.println(editType);
 		switch(editType)
 		{
 			case "add": 
@@ -196,12 +243,20 @@ public class Menu {
 				break;
 			
 			case "edit":
-				deleteMeeting(lastChange[1]); //delete meeting from after edits
-				addMeeting(lastChange[0]); //add meeting from before edits
+				//delete meeting from after edits
+				for(Employee employee : lastChange[1].getAttending())
+				{
+					employee.getDiary().remove(lastChange[1]);
+				}
+				
+				//add meeting from before edits
+				for(Employee employee : lastChange[0].getAttending())
+				{
+					employee.getDiary().add(lastChange[0]);
+				}
 				undo = true;
 				break;
 		}
-		
 		return undo;
 	}
 	
