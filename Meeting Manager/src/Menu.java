@@ -223,7 +223,7 @@ public class Menu {
 	
 	
 	/**
-	 * Undo feature (only undoes the very last change)
+	 * Undo feature
 	 */
 	public boolean undo()
 	{
@@ -249,11 +249,7 @@ public class Menu {
 					employee.getDiary().remove(lastChange[1]);
 				}
 				
-				//add meeting from before edits
-				for(Employee employee : lastChange[0].getAttending())
-				{
-					employee.getDiary().add(lastChange[0]);
-				}
+				addMeeting(lastChange[0]); //add meeting from before edits
 				undo = true;
 				break;
 		}
