@@ -420,6 +420,7 @@ public class Menu {
 	 * Search feature
 	 * @param employees
 	 * @param date
+	 * @param endMeetingTime 
 	 * @param startTime
 	 * @param endTime
 	 * @return 
@@ -474,20 +475,54 @@ public class Menu {
 			
 			//Add all contents of the temporary set to allBusy Set
 			allBusy.addAll(tempEmployeeBusySet);
+			
 		}
 
 		Set<Time> tempSet = new HashSet<Time>();
 		
+		//Stepping through allTimes set
 		for (Time time : allTimes) 
 		{
 			if (time.equals(startSearchTime) || time.after(startSearchTime) && time.before(endSearchTime))
 			{
+				//Adds value to Set if in range
 				tempSet.add(time);
 			}
 		}		
 		
 		//Removing all times from tempSet which are in allBusy Set
 		tempSet.removeAll(allBusy);
+		
+		if (duration > 30)
+		{
+			for (Time freeTime : tempSet)
+			{
+				for (Employee employee : employeesAtMeeting)
+				{
+					String tempString = freeTime.toString();
+
+					//Create variable for second start time, adding the first start time
+					LocalTime meetingEndTime = LocalTime.parse(tempString);
+
+					//Add 30 mins to starting time
+					meetingEndTime = meetingEndTime.plusMinutes(duration);
+					
+					//Convert variable to String
+					String stringMeetingEndTime = (meetingEndTime.toString() + ":00");
+					
+					//Convert string to Time object
+					Time endOfMeeting = java.sql.Time.valueOf(stringMeetingEndTime);
+					
+					//If the employee is not free between the possible time and the duration of the meeting
+					if (employee.isFree(date, freeTime, endOfMeeting) == false)
+					{
+						//Remove possible time from tempSet
+						tempSet.remove(freeTime);
+					}
+				}
+			}
+		}
+		
 		
 	    //Saves set of meetings to arrayList   
 		 List<Time> meetingTimes = new ArrayList<Time>(tempSet);

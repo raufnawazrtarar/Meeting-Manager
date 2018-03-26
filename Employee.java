@@ -1,4 +1,5 @@
 import java.sql.Time;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -145,7 +146,7 @@ public class Employee {
 	 * @param endTime
 	 * @return
 	 */
-	public boolean isFree(Time date, Time startTime, Time endTime)
+	public boolean isFree(Date date, Time startTime, Time endTime)
 	{
 		boolean free = true;
 		Meeting from = new Meeting(date, startTime);
